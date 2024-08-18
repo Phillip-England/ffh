@@ -1,6 +1,7 @@
 package ffh
 
 import (
+	"io/fs"
 	"os"
 	"strings"
 )
@@ -74,6 +75,52 @@ func OverwriteFileLines(path string, lines []string) error {
 	return OverwriteFile(path, content)
 }
 
+// creates a file or dir
+func Touch(dir string) error {
+	err := os.Mkdir(dir, 0777)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// removes a file or dir
+func RemoveFile(path string) error {
+	err := os.Remove(path)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// take in a dir name, walk through it and its children, and collect the paths of all files
+func CollectFilesDownward(dir string) ([]string, error) {
+	var paths []string
+	err := fs.WalkDir(os.DirFS(dir), dir, func(path string, d fs.DirEntry, err error) error {
+		if err != nil {
+			return err
+		}
+		if !d.IsDir() {
+			paths = append(paths, path)
+		}
+		return nil
+	})
+	if err != nil {
+		return nil, err
+	}
+	return paths, nil
+}
+
+// checks if a slice contains a string
+func SliceContains(ss []string, s string) bool {
+	for _, str := range ss {
+		if str == s {
+			return true
+		}
+	}
+	return false
+}
+
 //======================================
 // higher order functions
 //======================================
@@ -90,6 +137,19 @@ func MapFileLines(path string, f func(string) string) ([]string, error) {
 		newLines[i] = f(line)
 	}
 	return newLines, nil
+}
+
+// work on each string in a slice, returning a new slice
+func MapStrings(ss []string, f func(int, string) string) []string {
+	newStrings := make([]string, 0)
+	for i, s := range ss {
+		newString := f(i, s)
+		if newString == "" {
+			continue
+		}
+		newStrings = append(newStrings, newString)
+	}
+	return newStrings
 }
 
 //======================================
@@ -139,5 +199,21 @@ func GoTypeFunc(typeName string, name string, params string, returnStr string, b
 		newLines = append(newLines, newLine)
 	}
 	content = strings.Join(newLines, "\n")
+	return content, nil
+}
+
+// return a go import statement
+func GoImport(imports []string) (string, error) {
+	if len(imports) == 0 {
+		return "", nil
+	}
+	if len(imports) == 1 {
+		return "import \"" + imports[0] + "\"\n", nil
+	}
+	content := "import (\n"
+	for _, imp := range imports {
+		content += "\t\"" + imp + "\"\n"
+	}
+	content += ")\n"
 	return content, nil
 }
