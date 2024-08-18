@@ -5,12 +5,6 @@ import (
 	"testing"
 )
 
-//======================================
-// testing i/o operations
-//======================================
-
-const PATH = "ffh_doc.txt"
-
 func TestClearFile(t *testing.T) {
 	err := OverwriteFile(PATH, "Hello, World!")
 	if err != nil {
@@ -117,13 +111,13 @@ func TestOverwriteFileLines(t *testing.T) {
 	}
 }
 
-func TestCollectFilesDownward(t *testing.T) {
-	files, err := CollectFilesDownward(".")
+func TestCollectFilesCascade(t *testing.T) {
+	files, err := CollectFilesCascade(".")
 	if err != nil {
-		t.Errorf("CollectFilesDownward() failed: %v", err)
+		t.Errorf("CollectFilesCascade() failed: %v", err)
 	}
 	if len(files) == 0 {
-		t.Errorf("CollectFilesDownward() failed: no files found")
+		t.Errorf("CollectFilesCascade() failed: no files found")
 	}
 	goFiles := MapStrings(files, func(_ int, s string) string {
 		if strings.HasSuffix(s, ".go") {
@@ -132,7 +126,7 @@ func TestCollectFilesDownward(t *testing.T) {
 		return ""
 	})
 	if !SliceContains(goFiles, "ffh_test.go") {
-		t.Errorf("CollectFilesDownward() failed: go files not found")
+		t.Errorf("CollectFilesCascade() failed: go files not found")
 	}
 }
 
@@ -161,59 +155,4 @@ func TestTouch(t *testing.T) {
 	if !FileExists("test") {
 		t.Errorf("Mkdir() failed: directory not created")
 	}
-}
-
-//======================================
-// testing higher order functions
-//======================================
-
-func TestMapFileLines(t *testing.T) {
-	err := OverwriteFile(PATH, "Hello, World!")
-	if err != nil {
-		t.Errorf("OverwriteFile() failed: %v", err)
-	}
-	lines, err := MapFileLines(PATH, strings.ToUpper)
-	if err != nil {
-		t.Errorf("MapFileLines() failed: %v", err)
-	}
-	if lines[0] != "HELLO, WORLD!" {
-		t.Errorf("MapFileLines() failed: content mismatch")
-	}
-	err = OverwriteFileLines(PATH, lines)
-	if err != nil {
-		t.Errorf("OverwriteFileLines() failed: %v", err)
-	}
-	content, err := ReadFile(PATH)
-	if err != nil {
-		t.Errorf("ReadFile() failed: %v", err)
-	}
-	if content != "HELLO, WORLD!" {
-		t.Errorf("ReadFile() failed: content mismatch")
-	}
-}
-
-func TestMapStrings(t *testing.T) {
-	lines := []string{"Hello", "World"}
-	newLines := MapStrings(lines, func(_ int, s string) string {
-		return strings.ToUpper(s)
-	})
-	if newLines[0] != "HELLO" {
-		t.Errorf("MapStrings() failed: content mismatch")
-	}
-}
-
-//======================================
-// testing writing go code
-//======================================
-
-func TestGoType(t *testing.T) {
-
-}
-
-func TestGoFunc(t *testing.T) {
-
-}
-
-func TestGoTypeFunc(t *testing.T) {
-
 }
