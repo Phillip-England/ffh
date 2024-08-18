@@ -6,15 +6,15 @@ import (
 )
 
 func TestClearFile(t *testing.T) {
-	err := OverwriteFile(PATH, "Hello, World!")
+	err := OverwriteFile(TEST_FILE, "Hello, World!")
 	if err != nil {
 		t.Errorf("OverwriteFile() failed: %v", err)
 	}
-	err = ClearFile(PATH)
+	err = ClearFile(TEST_FILE)
 	if err != nil {
 		t.Errorf("ClearFile() failed: %v", err)
 	}
-	content, err := ReadFile(PATH)
+	content, err := ReadFile(TEST_FILE)
 	if err != nil {
 		t.Errorf("ReadFile() failed: %v", err)
 	}
@@ -24,15 +24,15 @@ func TestClearFile(t *testing.T) {
 }
 
 func TestAppendFile(t *testing.T) {
-	err := OverwriteFile(PATH, "Hello, World")
+	err := OverwriteFile(TEST_FILE, "Hello, World")
 	if err != nil {
 		t.Errorf("OverwriteFile() failed: %v", err)
 	}
-	err = AppendFile(PATH, "!")
+	err = AppendFile(TEST_FILE, "!")
 	if err != nil {
 		t.Errorf("AppendFile() failed: %v", err)
 	}
-	content, err := ReadFile(PATH)
+	content, err := ReadFile(TEST_FILE)
 	if err != nil {
 		t.Errorf("ReadFile() failed: %v", err)
 	}
@@ -42,15 +42,15 @@ func TestAppendFile(t *testing.T) {
 }
 
 func TestAppendFileLine(t *testing.T) {
-	err := OverwriteFile(PATH, "Hello, World")
+	err := OverwriteFile(TEST_FILE, "Hello, World")
 	if err != nil {
 		t.Errorf("OverwriteFile() failed: %v", err)
 	}
-	err = AppendFileLine(PATH, "!")
+	err = AppendFileLine(TEST_FILE, "!")
 	if err != nil {
 		t.Errorf("AppendFileLine() failed: %v", err)
 	}
-	content, err := ReadFile(PATH)
+	content, err := ReadFile(TEST_FILE)
 	if err != nil {
 		t.Errorf("ReadFile() failed: %v", err)
 	}
@@ -60,17 +60,17 @@ func TestAppendFileLine(t *testing.T) {
 }
 
 func TestFileExists(t *testing.T) {
-	if !FileExists(PATH) {
+	if !FileExists(TEST_FILE) {
 		t.Errorf("!FileExists() failed: file should exist")
 	}
 }
 
 func TestOverwriteFile(t *testing.T) {
-	err := OverwriteFile(PATH, "Hello, World!")
+	err := OverwriteFile(TEST_FILE, "Hello, World!")
 	if err != nil {
 		t.Errorf("OverwriteFile() failed: %v", err)
 	}
-	content, err := ReadFile(PATH)
+	content, err := ReadFile(TEST_FILE)
 	if err != nil {
 		t.Errorf("ReadFile() failed: %v", err)
 	}
@@ -80,11 +80,11 @@ func TestOverwriteFile(t *testing.T) {
 }
 
 func TestReadFile(t *testing.T) {
-	err := OverwriteFile(PATH, "Hello, World!")
+	err := OverwriteFile(TEST_FILE, "Hello, World!")
 	if err != nil {
 		t.Errorf("OverwriteFile() failed: %v", err)
 	}
-	content, err := ReadFile(PATH)
+	content, err := ReadFile(TEST_FILE)
 	if err != nil {
 		t.Errorf("ReadFile() failed: %v", err)
 	}
@@ -94,15 +94,15 @@ func TestReadFile(t *testing.T) {
 }
 
 func TestOverwriteFileLines(t *testing.T) {
-	err := OverwriteFile(PATH, "Hello, World!")
+	err := OverwriteFile(TEST_FILE, "Hello, World!")
 	if err != nil {
 		t.Errorf("OverwriteFile() failed: %v", err)
 	}
-	err = OverwriteFileLines(PATH, []string{"Hello", "World"})
+	err = OverwriteFileLines(TEST_FILE, []string{"Hello", "World"})
 	if err != nil {
 		t.Errorf("OverwriteFileLines() failed: %v", err)
 	}
-	content, err := ReadFile(PATH)
+	content, err := ReadFile(TEST_FILE)
 	if err != nil {
 		t.Errorf("ReadFile() failed: %v", err)
 	}

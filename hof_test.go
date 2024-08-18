@@ -6,22 +6,22 @@ import (
 )
 
 func TestMapFileLines(t *testing.T) {
-	err := OverwriteFile(PATH, "Hello, World!")
+	err := OverwriteFile(TEST_FILE, "Hello, World!")
 	if err != nil {
 		t.Errorf("OverwriteFile() failed: %v", err)
 	}
-	lines, err := MapFileLines(PATH, strings.ToUpper)
+	lines, err := MapFileLines(TEST_FILE, strings.ToUpper)
 	if err != nil {
 		t.Errorf("MapFileLines() failed: %v", err)
 	}
 	if lines[0] != "HELLO, WORLD!" {
 		t.Errorf("MapFileLines() failed: content mismatch")
 	}
-	err = OverwriteFileLines(PATH, lines)
+	err = OverwriteFileLines(TEST_FILE, lines)
 	if err != nil {
 		t.Errorf("OverwriteFileLines() failed: %v", err)
 	}
-	content, err := ReadFile(PATH)
+	content, err := ReadFile(TEST_FILE)
 	if err != nil {
 		t.Errorf("ReadFile() failed: %v", err)
 	}

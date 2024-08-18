@@ -1,3 +1,3 @@
 package ffh
 
-const PATH = "ffh_doc.txt"
+const TEST_FILE = "ffh_doc.txt"
