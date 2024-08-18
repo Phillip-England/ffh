@@ -14,6 +14,10 @@ import (
     "fmt"
     "github.com/Phillip-England/ffh"
 )
+
+func main() {
+    // ...
+}
 ```
 
 ## Examples
