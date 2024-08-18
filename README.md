@@ -16,7 +16,9 @@ import (
 )
 ```
 
-## Quickstart
+## Examples
+
+Creating a Go func string and writing it to a file
 ```go
 func main() {
     path := "./some.go"
