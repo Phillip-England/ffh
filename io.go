@@ -71,7 +71,7 @@ func OverwriteFileLines(path string, lines []string) error {
 	return OverwriteFile(path, content)
 }
 
-// creates a file or dir
+// creates a file or dir if it does not exist
 func Touch(dir string) error {
 	err := os.Mkdir(dir, 0777)
 	if err != nil {
@@ -115,4 +115,9 @@ func SliceContains(ss []string, s string) bool {
 		}
 	}
 	return false
+}
+
+// takes a slice of lines and returns a string
+func LinesToStr(lines []string) string {
+	return strings.Join(lines, "\n")
 }

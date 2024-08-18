@@ -5,6 +5,16 @@ import (
 	"testing"
 )
 
+func TestTouch(t *testing.T) {
+	err := Touch("test")
+	if err != nil {
+		t.Errorf("Mkdir() failed: %v", err)
+	}
+	if !FileExists("test") {
+		t.Errorf("Mkdir() failed: directory not created")
+	}
+}
+
 func TestClearFile(t *testing.T) {
 	err := OverwriteFile(TEST_FILE, "Hello, World!")
 	if err != nil {
@@ -125,7 +135,7 @@ func TestCollectFilesCascade(t *testing.T) {
 		}
 		return ""
 	})
-	if !SliceContains(goFiles, "ffh_test.go") {
+	if !SliceContains(goFiles, "const.go") {
 		t.Errorf("CollectFilesCascade() failed: go files not found")
 	}
 }
@@ -144,15 +154,5 @@ func TestRemoveFile(t *testing.T) {
 	}
 	if FileExists("./test") {
 		t.Errorf("RemoveFile() failed: file not removed")
-	}
-}
-
-func TestTouch(t *testing.T) {
-	err := Touch("test")
-	if err != nil {
-		t.Errorf("Mkdir() failed: %v", err)
-	}
-	if !FileExists("test") {
-		t.Errorf("Mkdir() failed: directory not created")
 	}
 }
