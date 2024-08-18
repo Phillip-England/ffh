@@ -71,12 +71,22 @@ func OverwriteFileLines(path string, lines []string) error {
 	return OverwriteFile(path, content)
 }
 
-// creates a file or dir if it does not exist
-func Touch(dir string) error {
+// creates a dir
+func Mkdir(dir string) error {
 	err := os.Mkdir(dir, 0777)
 	if err != nil {
 		return err
 	}
+	return nil
+}
+
+// creates a file if it does not exist - does nothing if it does
+func Touch(path string) error {
+	f, err := os.Create(path)
+	if err != nil {
+		return err
+	}
+	defer f.Close()
 	return nil
 }
 
