@@ -1,5 +1,5 @@
 # ffh
-read and write go files
+read and write `.go` files
 
 ## Installation
 ```bash
@@ -18,7 +18,7 @@ import (
 
 ## Examples
 
-Creating a Go func string and writing it to a file
+create a `.go` func as a string and write it out to a file
 ```go
 func main() {
     path := "./some.go"
