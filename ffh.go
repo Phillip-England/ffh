@@ -38,8 +38,14 @@ func AppendFileLine(path string, line string) error {
 	return AppendFile(path, "\n"+line)
 }
 
+// appends lines to a file
+func AppendFileLines(path string, lines []string) error {
+	content := strings.Join(lines, "\n")
+	return AppendFile(path, content)
+}
+
 // writes content to a file - overwrites existing content - creates file if it does not exist
-func WriteFile(path string, content string) error {
+func OverwriteFile(path string, content string) error {
 	err := os.WriteFile(path, []byte(content), 0666)
 	if err != nil {
 		return err
@@ -63,9 +69,9 @@ func FileExists(path string) bool {
 }
 
 // writes lines to a file
-func WriteFileLines(path string, lines []string) error {
+func OverwriteFileLines(path string, lines []string) error {
 	content := strings.Join(lines, "\n")
-	return WriteFile(path, content)
+	return OverwriteFile(path, content)
 }
 
 //======================================
@@ -91,7 +97,7 @@ func MapFileLines(path string, f func(string) string) ([]string, error) {
 //======================================
 
 // return a go type definition
-func GoType(path string, typeName string, fields []string) (string, error) {
+func GoType(typeName string, fields []string) (string, error) {
 	content := "type " + typeName + " struct {\n"
 	for _, field := range fields {
 		content += "\t" + field + "\n"
@@ -101,7 +107,7 @@ func GoType(path string, typeName string, fields []string) (string, error) {
 }
 
 // return a go function definition
-func GoFunc(path string, name string, params string, returnStr string, body string) (string, error) {
+func GoFunc(name string, params string, returnStr string, body string) (string, error) {
 	content := "func " + name + "(" + params + ") " + returnStr + " {\n"
 	content += body
 	content += "}\n"
@@ -119,7 +125,7 @@ func GoFunc(path string, name string, params string, returnStr string, body stri
 }
 
 // return a go func for a type
-func GoTypeFunc(path string, typeName string, name string, params string, returnStr string, body string) (string, error) {
+func GoTypeFunc(typeName string, name string, params string, returnStr string, body string) (string, error) {
 	content := "func (" + typeName + ") " + name + "(" + params + ") " + returnStr + " {\n"
 	content += body
 	content += "}\n"

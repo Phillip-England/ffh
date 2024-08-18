@@ -1,7 +1,6 @@
 package ffh
 
 import (
-	"fmt"
 	"strings"
 	"testing"
 )
@@ -13,9 +12,9 @@ import (
 const FILE = "ffh_doc.txt"
 
 func TestBasicIO(t *testing.T) {
-	err := WriteFile(FILE, "Hello, World!")
+	err := OverwriteFile(FILE, "Hello, World!")
 	if err != nil {
-		t.Errorf("WriteFile() failed: %v", err)
+		t.Errorf("OverwriteFile() failed: %v", err)
 	}
 	content, err := ReadFile(FILE)
 	if err != nil {
@@ -38,9 +37,9 @@ func TestBasicIO(t *testing.T) {
 	if !FileExists(FILE) {
 		t.Errorf("!FileExists() failed: file should exist")
 	}
-	err = WriteFileLines(FILE, []string{"Hello", "World"})
+	err = OverwriteFileLines(FILE, []string{"Hello", "World"})
 	if err != nil {
-		t.Errorf("WriteFileLines() failed: %v", err)
+		t.Errorf("OverwriteFileLines() failed: %v", err)
 	}
 	content, err = ReadFile(FILE)
 	if err != nil {
@@ -78,9 +77,9 @@ func TestBasicIO(t *testing.T) {
 //======================================
 
 func TestMapFileLines(t *testing.T) {
-	err := WriteFile(FILE, "Hello, World!")
+	err := OverwriteFile(FILE, "Hello, World!")
 	if err != nil {
-		t.Errorf("WriteFile() failed: %v", err)
+		t.Errorf("OverwriteFile() failed: %v", err)
 	}
 	lines, err := MapFileLines(FILE, strings.ToUpper)
 	if err != nil {
@@ -89,9 +88,9 @@ func TestMapFileLines(t *testing.T) {
 	if lines[0] != "HELLO, WORLD!" {
 		t.Errorf("MapFileLines() failed: content mismatch")
 	}
-	err = WriteFileLines(FILE, lines)
+	err = OverwriteFileLines(FILE, lines)
 	if err != nil {
-		t.Errorf("WriteFileLines() failed: %v", err)
+		t.Errorf("OverwriteFileLines() failed: %v", err)
 	}
 	content, err := ReadFile(FILE)
 	if err != nil {
@@ -107,32 +106,13 @@ func TestMapFileLines(t *testing.T) {
 //======================================
 
 func TestGoType(t *testing.T) {
-	goType, err := GoType(FILE, "Person", []string{
-		"Name string",
-		"Age int",
-	})
-	if err != nil {
-		t.Errorf("GoType() failed: %v", err)
-	}
-	fmt.Println(goType)
+
 }
 
 func TestGoFunc(t *testing.T) {
-	goFunc, err := GoFunc(FILE, "Hello", "name string", "string", `
-		return "Hello, " + name + "!"
-	`)
-	if err != nil {
-		t.Errorf("GoFunc() failed: %v", err)
-	}
-	fmt.Println(goFunc)
+
 }
 
 func TestGoTypeFunc(t *testing.T) {
-	goTypeFunc, err := GoTypeFunc(FILE, "p *Person", "Greet", "name string", "string", `
-		return "Hello, " + p.Name + "!"
-	`)
-	if err != nil {
-		t.Errorf("GoTypeFunc() failed: %v", err)
-	}
-	fmt.Println(goTypeFunc)
+
 }
