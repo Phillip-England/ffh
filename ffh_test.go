@@ -5,9 +5,17 @@ import (
 	"testing"
 )
 
-func TestFFH(t *testing.T) {
-	goFile, _ := NewGoFile("ffh_test.go")
-	fmt.Println(goFile.Content)
+type Route struct {
+	Method string
 }
 
-// newfunc
+func (r *Route) Render() {
+	fmt.Println(r.Method)
+}
+
+func TestGoFile(t *testing.T) {
+	f, _ := NewGoFile("ffh_test.go")
+	for _, imp := range f.GoImport.Imports {
+		fmt.Println(imp)
+	}
+}
