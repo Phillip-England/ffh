@@ -15,7 +15,8 @@ func (r *Route) Render() {
 
 func TestGoFile(t *testing.T) {
 	f, _ := NewGoFile("ffh_test.go")
-	for _, imp := range f.GoImport.Imports {
-		fmt.Println(imp)
+	for _, imp := range f.GoTypes {
+		fmt.Println(imp.Name)
+		// fmt.Println(imp.Content)
 	}
 }

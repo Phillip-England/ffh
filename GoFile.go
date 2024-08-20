@@ -11,6 +11,7 @@ type GoFile struct {
 	Path        string
 	GoFuncs     []*GoFunc
 	GoImport    *GoImport
+	GoTypes     []*GoType
 }
 
 func NewGoFile(path string) (*GoFile, error) {
@@ -55,6 +56,17 @@ func (f *GoFile) Init() error {
 		return err
 	}
 	f.GoImport = goImport
+	extractedTypes, err := f.ExtractTypes()
+	if err != nil {
+		return err
+	}
+	for _, goTypeStr := range extractedTypes {
+		goType, err := NewGoType(goTypeStr)
+		if err != nil {
+			return err
+		}
+		f.GoTypes = append(f.GoTypes, goType)
+	}
 	return nil
 }
 
@@ -157,10 +169,10 @@ func (f *GoFile) ExtractTypes() ([]string, error) {
 	for _, line := range lines {
 		if strings.Contains(line, "type") && strings.Contains(line, "{") {
 			if strings.Contains(line, "{") {
+				blocks = append(blocks, line)
 				inTypeBlock = true
 				continue
 			}
-			blocks = append(blocks, line)
 			return blocks, nil
 		}
 		if !inTypeBlock {
