@@ -100,7 +100,7 @@ func ExtractTypeBlocks(str string) ([]string, error) {
 	}
 	currentType := ""
 	LoopLines(str, func(i int, line string) bool {
-		if strings.Contains(line, "type ") {
+		if strings.Contains(line, "type ") && !strings.Contains(line, "//") {
 			if !strings.Contains(line, "{") {
 				typeBlocks = append(typeBlocks, line)
 				return false
@@ -170,4 +170,18 @@ func StrIsGoFile(str string) error {
 		return fmt.Errorf("provided str did not contain any type definitions or func definitions")
 	}
 	return nil
+}
+
+func ExtractFuncByName(str string, funcName string) (string, error) {
+	funcBlocks, err := ExtractFuncBlocks(str)
+	if err != nil {
+		return "", err
+	}
+	for _, block := range funcBlocks {
+		firstLine := strings.Split(block, "\n")[0]
+		if strings.Contains(firstLine, funcName) {
+			return block, nil
+		}
+	}
+	return "", fmt.Errorf("failed to located func named: %s", funcName)
 }

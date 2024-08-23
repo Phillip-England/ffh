@@ -1,6 +1,7 @@
 package ffh
 
 import (
+	"fmt"
 	"strings"
 	"testing"
 )
@@ -27,15 +28,15 @@ func Test_ExtractTypeBlocks(t *testing.T) {
 	str, _ := ReadFile(PATH)
 	goTypes, _ := ExtractTypeBlocks(str)
 	if len(goTypes) != 2 {
-		t.Error("expected 2 test types to be found in this file")
+		t.Errorf("expected 2 test types to be found in this file, instead found: %d", len(goTypes))
 	}
 }
 
 func Test_ExtractFuncBlocks(t *testing.T) {
 	str, _ := ReadFile(PATH)
 	goFuncs, _ := ExtractFuncBlocks(str)
-	if len(goFuncs) != 4 {
-		t.Error("expected 4 func blocks in this file")
+	if len(goFuncs) != 5 {
+		t.Error("expected 5 func blocks in this file")
 	}
 }
 
@@ -45,4 +46,10 @@ func Test_ExtractImportBlock(t *testing.T) {
 	if !strings.Contains(block, "testing") {
 		t.Error("failed to extract import block correctly")
 	}
+}
+
+func Test_ExtractFuncByName(t *testing.T) {
+	str, _ := ReadFile(PATH)
+	fn, _ := ExtractFuncByName(str, "Test_ExtractFuncByName")
+	fmt.Println(fn)
 }
