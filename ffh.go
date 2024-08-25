@@ -39,10 +39,6 @@ func ReadFile(path string) (string, error) {
 // extracts all the funcs out of a .go file string
 func ExtractFuncBlocks(str string) ([]string, error) {
 	funcs := []string{}
-	err := StrIsGoFile(str)
-	if err != nil {
-		return funcs, err
-	}
 	currentFunc := ""
 	LoopLines(str, func(i int, line string) bool {
 		if strings.Contains(line, "func ") && strings.Contains(line, "(") && strings.Contains(line, ")") && strings.Contains(line, "{") {
